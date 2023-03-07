@@ -1,0 +1,16 @@
+{
+  "webdavPath": "./webdav",
+  "address": ":8080",
+  "userMap": {
+    "Lamzy": [
+      "123456" , "admin" , "family"
+    ],
+    "XiaoMing": [
+      "123456" , "family"
+    ],
+    "XiaoHong": [
+      "123456" , "family"
+    ]
+  }
+}
+
