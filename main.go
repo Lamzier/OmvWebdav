@@ -18,7 +18,7 @@ type Userinfo struct { //用户类
 
 var userMap = make(map[string]Userinfo)
 var webdavPath = "./"   // webdav目录
-var address = ":8080"   // 开放端口
+var address = ":80"     // 开放端口
 var rootPath = "webdav" // 网站根目录
 
 /*
