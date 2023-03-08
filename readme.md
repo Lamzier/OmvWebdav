@@ -23,3 +23,4 @@
 #### cd到output目录下 输入命令：
 #### # chmod 777 OmvWebdav_linux
 #### # nohup ./OmvWebdav_linux
+## webdav默认访问地址：http://127.0.0.1/webdav

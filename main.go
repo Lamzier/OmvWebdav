@@ -17,8 +17,9 @@ type Userinfo struct { //用户类
 }
 
 var userMap = make(map[string]Userinfo)
-var webdavPath = "./webdav" // webdav目录
-var address = ":8080"       //开放端口
+var webdavPath = "./"   // webdav目录
+var address = ":8080"   // 开放端口
+var rootPath = "webdav" // 网站根目录
 
 /*
 判断目录是否存在
@@ -38,10 +39,10 @@ func pathExists(path string) bool {
 初始化文件
 */
 func initFile() {
-	publicPath := webdavPath + "/public" // 公共目录 ， 可读不可改不可执行
-	noSafePath := webdavPath + "/noSafe" //不安全目录 , 可读可改
-	userPath := webdavPath + "/user"     // 用户目录， 用户可改可读，其他不可改
-	if !pathExists(publicPath) {         //没有目录，创建目录
+	publicPath := webdavPath + rootPath + "/public" // 公共目录 ， 可读不可改不可执行
+	noSafePath := webdavPath + rootPath + "/noSafe" //不安全目录 , 可读可改
+	userPath := webdavPath + rootPath + "/user"     // 用户目录， 用户可改可读，其他不可改
+	if !pathExists(publicPath) {                    //没有目录，创建目录
 		Println("创建目录：", publicPath)
 		err := os.MkdirAll(publicPath, os.ModePerm)
 		if err != nil {
@@ -77,10 +78,10 @@ func initFile() {
 }
 
 type ConfigData struct {
-	//userMap    map[string]Userinfo //用户信息
 	WebdavPath string              `json:"webdavPath"` // webdav目录
 	Address    string              `json:"address"`
 	UserMap    map[string][]string `json:"userMap"`
+	RootPath   string              `json:"rootPath"`
 }
 
 /*
@@ -117,6 +118,9 @@ func getUserList() {
 	if len(configDate.Address) > 0 {
 		address = configDate.Address
 	}
+	if len(configDate.RootPath) > 0 {
+		rootPath = configDate.RootPath
+	}
 	users := configDate.UserMap
 	if len(users) <= 0 {
 		userMap["admin"] = Userinfo{
@@ -143,10 +147,10 @@ func getUserList() {
 */
 func getUriNames(requestURI string) []string {
 	uriNames := strings.Split(requestURI, "/")
-	if len(uriNames) <= 1 { //访问的是 "/"
+	if len(uriNames) <= 2 { //访问的是 "/"
 		return nil
 	}
-	uriNames = uriNames[1:]
+	uriNames = uriNames[2:]
 	return uriNames
 }
 
@@ -214,7 +218,8 @@ func createWebDav() {
 		FileSystem: webdav.Dir(webdavPath),
 		LockSystem: webdav.NewMemLS(),
 	}
-	http.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
+	http.HandleFunc("/"+rootPath+"/", func(writer http.ResponseWriter, request *http.Request) {
+
 		//先判断是否登陆
 		username, password, ok := request.BasicAuth()
 		if !ok {
