@@ -155,7 +155,7 @@ func getUriNames(requestURI string) []string {
 */
 func isOperateMethod(method string) bool {
 	var operateMethod = []string{
-		"MKCOL", "DELETE", "PUT", "MOVE",
+		"MKCOL", "DELETE", "PUT", "MOVE", "COPY", "PROPPATCH",
 	}
 	for i := 0; i < len(operateMethod); i++ {
 		temp := operateMethod[i]

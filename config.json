@@ -1,6 +1,6 @@
 {
   "webdavPath": "./webdav",
-  "address": ":8080",
+  "address": ":80",
   "userMap": {
     "Lamzy": [
       "123456" , "admin" , "family"
